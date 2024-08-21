@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up</title>
+    <link rel="stylesheet" href="css/signup.css" type="text/css">
+    
+</head>
+<body>
+   
+<div class="container" id="container">
+	<div class="form-container sign-up-container">
+		<form id="signform" action="/signup" method="post">
+			<h1>Create Account</h1>
+			<div>
+				
+				<a href="#">  <img style="height: 35px;width: 38px;" src="img/icon/google.png"> </a>
+				
+			</div>
+			<span>or use your google email for registration</span>
+			<input type="text" name="name" id="name" placeholder="Full Name" />
+			<div id="error1" class="error-message"></div>
+			<input type="text" name="phone" id="phone" placeholder="Phone" />
+			<div id="error2" class="error-message"></div>
+			<input type="email" name="email" id="email" placeholder="Email" />
+			<div id="error3" class="error-message"></div>
+			<input type="password" name="password" id="password" placeholder="Password" />
+			<div id="error4" class="error-message"></div>
+			<input type="password" name="cPassword" id="confirm-password" placeholder="Conform Password" />
+			<div id="error5" class="error-message"></div>
+			
+			<button type="submit">Sign Up</button>
+		</form>
+	</div>
+	<div class="form-container sign-in-container">
+		<form action="#">
+			<h1>Sign in</h1>
+			<!-- <div class="social-container">
+				<a href="#" class="social"><i class="fab fa-facebook-f"></i></a>
+				<a href="#" class="social"><i class="fab fa-google-plus-g"></i></a>
+				<a href="#" class="social"><i class="fab fa-linkedin-in"></i></a>
+			</div> -->
+			
+			<input type="email" placeholder="Email" />
+			<input type="password" placeholder="Password" />
+
+            <span>or use your google account</span>
+            <img style="height: 28px;width: 34px;" src="img/icon/google.png">
+            <a class="social"><i class="fab fa-google-plus-g"></i></a>
+
+			<a href="#">Forgot your password?</a>
+			<button>Sign In</button>
+		</form>
+	</div>
+	<div class="overlay-container">
+		<div class="overlay">
+			<div class="overlay-panel overlay-left">
+				<h1>Welcome Back!</h1>
+				<p>To keep connected with us please login with your personal info</p>
+				<button class="ghost" id="signIn">Sign In</button>
+			</div>
+			<div class="overlay-panel overlay-right">
+				<p>Enter your personal details and start journey with us</p>
+				<button class="ghost" id="signUp">Sign Up</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+<footer>
+	<p>
+		Created with <i class="fa fa-heart"></i> by
+		<a target="_blank" href="https://florin-pop.com">Florin Pop</a>
+		- Read how I created this and how you can join the challenge
+		<a target="_blank" href="https://www.florin-pop.com/blog/2019/03/double-slider-sign-in-up-form/">here</a>.
+	</p>
+</footer>
+
+<script src="js/signup.js"></script>
+
+<script>
+
+	const nameid = document.getElementById("name");
+	const phoneid = document.getElementById("phone");
+	const passwordid = document.getElementById("password");
+	const emailid = document.getElementById("email");
+	const cpasswordid = document.getElementById("confirm-password");
+ 
+	const error1 = document.getElementById("error1");
+	const error2 = document.getElementById("error2");
+	const error3 = document.getElementById("error3");
+	const error4 = document.getElementById("error4");
+	const error5 = document.getElementById("error5");
+ 
+	const signform = document.getElementById("signform");
+ 
+ 
+ 
+ 
+  function nameValidateChecking(e) {
+	 const nameval = nameid.value;
+	 const namepattern = /^[a-zA-Z]+(?:[\s'-][a-zA-Z]+)*$/;
+ 
+	 if(nameval.trim()==""){
+		   error1.style.display="block" ;
+		   error1.innerHTML="please enter a valid name" 
+	 }else if(!namepattern.test(nameval)){
+		 error1.style.display="block" ;
+		 error1.innerHTML="name can only contain Alphabets and spaces" 
+	 }else{
+		 error1.style.display="none" ;
+		 error1.innerHTML="";
+	 }
+ 
+  }
+ 
+ 
+  function emailValidateChecking(e) {
+	 const emailval = emailid.value;
+	 const emailpattern =  /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+ 
+	 if(emailval.trim()==""){
+		   error3.style.display="block" ;
+		   error3.innerHTML="please enter a valid name" 
+	 }else if(!emailpattern.test(emailval)){
+		 error3.style.display="block" ;
+		 error3.innerHTML="Invalid Format" 
+	 }else{
+		 error3.style.display="none" ;
+		 error3.innerHTML="";
+	 }
+ 
+  }
+ 
+ 
+ 
+ 
+  function phoneValidateChecking(e) {
+    const phoneval = phoneid.value.trim();
+    const phonepattern = /^[0-9]{10}$/;
+
+    if (phoneval.trim() === "") {
+        error2.style.display = "block";
+        error2.innerHTML = "Please enter a phone number";
+    } else if (!phonepattern.test(phoneval)) {
+        error2.style.display = "block";
+        error2.innerHTML = "Phone number must be exactly 10 digits";
+    } else {
+        error2.style.display = "none";
+        error2.innerHTML = "";
+    }
+}
+ 
+ 
+ 
+ 
+  function passValidateChecking(e) {
+	 const passval = passwordid.value;
+	 const cpassval = cpasswordid.value;
+	 const alpha = /[a-zA-Z]/;
+	 const digit = /\d/;
+ 
+	 if(passval.trim()==""){
+		   error4.style.display="block" ;
+		   error4.innerHTML="please enter a password" 
+	 }else if(passval.length<6){
+		 error4.style.display="block" ;
+		 error4.innerHTML="Password should contain atleast 6 characters" ;
+	 }else if(!alpha.test(passval) || !digit.test(passval)){
+		 error4.style.display="block" ;
+		 error4.innerHTML="Password should contain numbers and letters" 
+	 }else{
+		 error4.style.display="none" ;
+		 error4.innerHTML="";
+	 }
+ 
+	 if(passval!==cpassval){
+		 error5.style.display="block" ;
+		 error5.innerHTML="Password do not match" 
+	 }else{
+		 error5.style.display="none" ;
+		 error5.innerHTML="";
+	 }
+ 
+  }
+ 
+ 
+	document.addEventListener("DOMContentLoaded",function(){
+	 signform.addEventListener("submit",function(e){
+ 
+		 nameValidateChecking();
+		 phoneValidateChecking();
+		 emailValidateChecking();
+		 passValidateChecking();
+  
+		 if( !nameid || !phoneid || !passwordid || !emailid || !cpasswordid ||
+			 !error1 || !error2 || !error3 || !error4 || !error5 || !signform ){//ithokke define cheyyunnath aaa defined functions nte ullil aahnnn	        
+			 console.error("One or more elemens are not found");			
+		 }
+ 
+		 //eee error div kalil error value und (true) anoo enn nokkan
+		 if( error1.innerHTML || error2.innerHTML || error3.innerHTML || error4.innerHTML || error5.innerHTML ){
+				   e.preventDefault() //submission block cheyyunnu
+		 }
+ 
+	 })
+	})
+ 
+ </script>
+
+</body>
+</html>
+
+
