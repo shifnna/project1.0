@@ -1,6 +1,7 @@
 const User = require("../../models/userSchema");
 const nodemailer = require("nodemailer");
-const env = require("dotenv").config()
+const env = require("dotenv").config();
+const bcrypt = require('bcrypt');
 
 const pageNotFound = async (req,res) => {
     try {
@@ -83,7 +84,7 @@ const signup = async (req,res) => {
     try {
         const {name,phone,email,password,cPassword} = req.body;
        
-    //   const newUser = new User({name,email,phone,password}); //schema instance nte ullil schemayilekk datas okke same orderil koduthu ayachu
+    //   const newUser = new User({name,email,phone,password,cPassword}); //schema instance nte ullil schemayilekk datas okke same orderil koduthu ayachu
     //   await newUser.save();
 
       if(password!=cPassword){
@@ -105,10 +106,10 @@ const signup = async (req,res) => {
           }
 
           req.session.userOtp=otp;
-          req.session.userData={email,password}
+          req.session.userData={name,phone,email,cPassword}
 
 
-        //   res.render("verify-otp");
+          res.render("user/verify-otp");
           console.log("OTP sent",otp);
           
 
@@ -121,10 +122,52 @@ const signup = async (req,res) => {
 
 
 
+
+const securePassword = async (password)=>{
+         try {
+            const passwordHash = await bcrypt.hash(password, 10);
+            return passwordHash;
+         } catch (error) {
+            
+         }
+}
+
+const verifyOtp = async (req,res)=>{
+    try {
+        const {otp} = req.body;
+        console.log(otp);
+
+        if(otp===req.session.userOtp){
+            const user = req.session.userData;
+            const passwordHash = await securePassword(user.cPassword);
+            const saveUserData = new User({
+                name: user.name,
+                email: user.email,
+                phone: user.phone,
+                password: passwordHash,
+            })
+            await saveUserData.save();
+            req.session.user = saveUserData. _id,
+            res.json({success:true,redirectUrl:"/"});
+        }else{
+            res.status(400).json({success:false , message:"invalid OTP, please try again"});
+          
+        }
+        
+    } catch (error) {
+        console.error("error verifying otp",error);
+        res.status(500).json({success:false,message:"an error occure"})
+            
+    }
+}
+
+
+
 module.exports = {
     loadHomepage,
     pageNotFound,
     loadShopping,
     loadSignup,
     signup,
+    verifyOtp,
 }
