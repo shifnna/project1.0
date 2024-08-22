@@ -129,7 +129,7 @@
                     <div id="otpTimer" class="otp-timer">
                         <span id="timerValue">60</span>
                     </div>
-                    <button type="button" class="btn btn-secondary">Resend OTP</button>
+                    <button type="button" class="btn btn-secondary" onclick="resendOTP()">Resend OTP</button>
                 </div>
                 <% if (locals.message && message.length > 0) { %>
                 <div class="alert alert-danger"><%= message %></div>
@@ -168,8 +168,8 @@ function validateOTPForm(){
     const otpInput=document.getElementById("otp").value;
 
     $.ajax({
-        type:"post",
-        url:"verify-otp",
+        type:"POST",
+        url:"/verify-otp",
         data:{otp:otpInput},
         success:function(response){
             if(response.success){
@@ -200,6 +200,50 @@ function validateOTPForm(){
     })
     return false;
 }
+
+
+
+function resendOTP(){
+    clearInterval(timerInterval);
+    timer=60;
+    document.getElementById('otp').disabled=false;
+    document.getElementById("timerValue").classList.remove("expired");
+    startTimer();
+    $.ajax({
+        type:"POST",
+        url:"/resend-otp",
+       
+        success:function(response){
+            if(response.success){
+                Swal.fire({
+                    icon:"success",
+                    title:"OTP resend successfully",
+                    showConfirmButton:false,
+                    timer:1500,
+
+                 })//.then(()=>{
+                //     window.location.href = response.redirectUrl;
+                // })
+            }else{
+                Swal.fire({
+                    icon:"error",
+                    title:Error,
+                    text:"An error occured while resending otp, please try again",
+                })
+            }
+        },
+        // error: function(){
+        //     Swal.fire({
+        //             icon:"error",
+        //             title:"invalid OTP",
+        //             text:"please try again",
+        //         })
+        // }
+    })
+    return false;
+}
+
+
 </script>
 <%- include("../../views/partials/user/footer") %>
 </body>
