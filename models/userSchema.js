@@ -13,7 +13,7 @@ const userSchema=new Schema({
     },
     phone:{
         type:String,
-        require:false, //for eg: oru single sign up cheyyanengil like google/facebook there phn number is not necessary.
+        required:false, //for eg: oru single sign up cheyyanengil like google/facebook there phn number is not necessary.
         unique:false,
         sparse:true,
         default:null
@@ -44,7 +44,7 @@ const userSchema=new Schema({
         default:0,
     },
     wishlist:[{
-        type:Schema.Types.ObjectId,
+        type:Number,
         ref:"Wishlist",
     }],
     orderHistory:[{

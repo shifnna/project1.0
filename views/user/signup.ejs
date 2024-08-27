@@ -15,7 +15,7 @@
 			<h1>Create Account</h1>
 			<div>
 				
-				<a href="#">  <img style="height: 35px;width: 38px;" src="img/icon/google.png"> </a>
+				<a href="/auth/google">  <img style="height: 35px;width: 38px;" src="img/icon/google.png"> </a>
 				
 			</div>
 			<span>or use your google email for registration</span>
@@ -30,11 +30,17 @@
 			<input type="password" name="cPassword" id="confirm-password" placeholder="Conform Password" />
 			<div id="error5" class="error-message"></div>
 			
+			<%if(locals.message && message.length>0){%>
+				<div class="alert color-red alert-danger text-center">
+				  <%=message%>
+				</div>
+				<%}%>
+
 			<button type="submit">Sign Up</button>
 		</form>
 	</div>
 	<div class="form-container sign-in-container">
-		<form action="#">
+		<form action="/login" method="post">
 			<h1>Sign in</h1>
 			<!-- <div class="social-container">
 				<a href="#" class="social"><i class="fab fa-facebook-f"></i></a>
@@ -42,15 +48,15 @@
 				<a href="#" class="social"><i class="fab fa-linkedin-in"></i></a>
 			</div> -->
 			
-			<input type="email" placeholder="Email" />
-			<input type="password" placeholder="Password" />
+			<input type="email" name="email" placeholder="Email" required />
+            <input type="password" name="password" placeholder="Password" required />
 
             <span>or use your google account</span>
-            <img style="height: 28px;width: 34px;" src="img/icon/google.png">
+           <a href="/auth/google"> <img style="height: 28px;width: 34px;" src="img/icon/google.png"></a>
             <a class="social"><i class="fab fa-google-plus-g"></i></a>
 
 			<a href="#">Forgot your password?</a>
-			<button>Sign In</button>
+			<button type="submit">Sign In</button>
 		</form>
 	</div>
 	<div class="overlay-container">
