@@ -45,7 +45,7 @@
         <div class="col-lg-6">
             <div class="card mb-4">
                 <div class="card-body">
-                    <form method="post" action="/admin/addProducts" enctype="multipart/form-data" onsubmit="return validateForm()">
+                    <form method="POST" action="/admin/editProduct/product._id" enctype="multipart/form-data" onsubmit="return validateForm()">
                         <div class="mb-4">
                             <label for="product_name" class="form-label">Product Name</label>
                             <input type="text" placeholder="Type here" name="productName" class="form-control border" id="product_name">
@@ -134,7 +134,7 @@
                             </div>
                         </div>
                         <div>
-                            <button class="btn btn-md rounded font-sm hover-up" type="button" onclick="validateAndSubmit()">Publish</button>
+                            <button class="btn btn-md rounded font-sm hover-up" type="submit" onclick="validateAndSubmit()">Publish</button>
                         </div>
                     </form>
                 </div>
@@ -143,7 +143,9 @@
     </div>
 </section>
 <script src="https://cdn.jsdelivr.net/npm/cropperjs/dist/cropper.min.js"></script>
+
 <script>
+
     function validateAndSubmit() {
         if (validateForm()) {
             document.forms[0].submit();

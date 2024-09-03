@@ -8,7 +8,7 @@ const categoryController = require("../controllers/admin/categoryController")
 const multer = require("multer");
 const storage = require("../helpers/multer");
 const uploads = multer({storage:storage});
-const brandController = require("../controllers/admin/brandController")
+const brandController = require("../controllers/admin/brandController");
 
 
 
@@ -46,8 +46,10 @@ router.post("/addProductOffer",adminAuth,productController.addProductOffer);
 router.get("/blockProduct",adminAuth,productController.blockProduct);
 router.get("/unblockProduct",adminAuth,productController.blockProduct);
 router.get("/editProduct",adminAuth,productController.getEditProduct);
-router.get("/editProduct/:id",adminAuth,uploads.array("images",4),productController.editProduct);
+router.post("/editProduct/:id", adminAuth, uploads.array("images", 4), productController.editProduct);
 router.post("/deleteImage",adminAuth,productController.deleteSingleImage);
+router.get("/product/:id",adminAuth,productController.getEditProduct);
+
 
 
 
