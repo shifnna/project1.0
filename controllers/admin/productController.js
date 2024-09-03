@@ -185,6 +185,137 @@ const removeProductOffer = async(req,res)=>{
 
 
 
+const blockProduct = async(req,res)=>{
+    try {
+        let id = req.query.id;
+        await Product.updateOne({_id:id},{$set:{isBlocked:true}});
+        res.redirect("/admin/products");
+
+    } catch (error) {
+        res.redirect("/pageerror")
+    }
+}
+
+
+
+
+const unblockProduct = async(req,res)=>{
+    try {
+        let id = req.query.id;
+        await Product.updateOne({_id:id},{$set:{isBlocked:false}});
+        res.redirect("/admin/products");
+
+    } catch (error) {
+        res.redirect("/pageerror")
+    }
+}
+
+
+
+
+
+
+const getEditProduct = async (req,res)=>{
+    try {
+        const id= req.query.id;
+        const product = await Product.findOne({_id:id});
+        const category = await Category.find({});
+        const brand = await Brand.find({});
+
+        res.render("admin/edit-product",{
+            product:product,
+            cat:category,
+            brand:brand
+        })
+    } catch (error) {
+        res.redirect("/pageerror")
+    }
+}
+
+
+
+
+
+
+const editProduct = async (req,res)=>{
+    try {
+        const id = req.params.id;
+        const product = await Product.findOne({_id:id});
+        const data = req.body;
+        const existingProduct = await Product.findOne({
+            productName:data.productName,
+            _id:{$ne:id}
+        });
+
+        if(existingProduct){
+            return res.status(400).json({error:"product with this name already exists, please try another name.."})
+        }
+
+        const image=[];
+
+        if(req.files && req.files.length > 0){
+            for(let i=0; i < req.files.length;i++){
+                image.push(req.files[i].filename)
+            }
+        }
+
+        const updateFields = {
+            productName:data.productName,
+            description:data.description,
+            brand:data.brand,
+            category:data.category,
+            regularPrice:data.regularPrice,
+            salePrice:data.salePrice,
+            quantity:data.quantity,
+            size:data.size,
+            color:data.color,
+        }
+
+        if(req.files.length > 0){
+            updateFields.$push = {productImage:{$each:image}}
+        }
+
+        await Product.findByIdAndUpdate(id,updateFields,{new:true});
+        res.redirect("/admin/products")
+    } catch (error) {
+        console.error(error);
+        res.redirect("/pageerror")
+        
+    }
+}
+
+
+
+
+
+
+const deleteSingleImage = async (req,res)=>{
+    try {
+        const {imageNameToServer,productIdToserver} = req.body;
+        const product = await Product.findByIdAndUpdate(productIdToserver,{$pull:{productImage:imageNameToServer}});
+        const imagePath = path.join( '/public/admin-assets/imgs/productImages',imageNameToServer);
+
+        if(fs.existsSync(imagePath)){
+            await fs.unlinkSync(imagePath);
+            console.log(`image ${imageNameToServer} deleted successfully`);
+            
+        }else{
+            console.log("Image Path:", imagePath);
+            console.log(`image ${imageNameToServer} not found`);
+        }
+
+        res.send({status:true})
+    } catch (error) {
+        res.redirect("/pageerror")
+    }
+}
+
+
+
+
+
+
+
 // Export the functions
 module.exports = {
     getProductAddPage,
@@ -192,4 +323,9 @@ module.exports = {
     getAllProducts,
     addProductOffer,
     removeProductOffer,
+    blockProduct,
+    unblockProduct,
+    getEditProduct,
+    editProduct,
+    deleteSingleImage,
 };

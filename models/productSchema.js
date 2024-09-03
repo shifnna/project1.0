@@ -119,7 +119,11 @@ const productSchema = new Schema({
     productOffer:{
         type: Number, 
         default:0
-    }
-});
+    },
+    isBlocked:{
+        type:Boolean,
+        default:false,
+    },
+},{timestamps:true});
 
 module.exports = mongoose.model('Product', productSchema);

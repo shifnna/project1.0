@@ -40,7 +40,7 @@ const loadSignup = async (req,res) => {
 
 const loadShopping = async (req,res) => {
     try {
-        return res.render("shop")
+        return res.render("user/shope")
     } catch (error) {
         console.log("shopping page not loading",error);
         res.status(500).send("server error")
